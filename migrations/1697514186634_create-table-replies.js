@@ -7,11 +7,9 @@ exports.up = (pgm) => {
     },
     comment_id: {
       type: 'VARCHAR(50)',
-      notNull: true,
     },
     owner: {
       type: 'VARCHAR(50)',
-      notNull: true,
     },
     content: {
       type: 'TEXT',

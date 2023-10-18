@@ -7,7 +7,6 @@ exports.up = (pgm) => {
     },
     owner: {
       type: 'VARCHAR(50)',
-      notNull: true,
     },
     title: {
       type: 'TEXT',
