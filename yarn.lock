@@ -2320,7 +2320,7 @@ inherits@2, inherits@^2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-instances-container@^2.0.3:
+instances-container@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/instances-container/-/instances-container-2.0.6.tgz#6da6e9d3be68aa79fe930c09e15c4557d6f0cf1f"
   integrity sha512-h117iLPh+IuCCo44oh4FftUakm8df4cf4pg5bm6EQSkEl5Ol26yKVdyB4T4MNJshiE75aFLS8j1IIi8obe8B+g==
