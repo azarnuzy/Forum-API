@@ -1,5 +1,6 @@
 const InvariantError = require('../../Commons/exceptions/InvariantError')
 const ThreadRepository = require('../../Domains/threads/ThreadRepository')
+const AddedThred = require('../../Domains/threads/entities/AddedThread')
 
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {
@@ -19,7 +20,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
     const result = await this._pool.query(query)
 
-    return result.rows[0]
+    return new AddedThred({ ...result.rows[0] })
   }
 
   async getThreadById(id) {
@@ -36,7 +37,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       throw new InvariantError('thread tidak ditemukan')
     }
 
-    return result.rows[0]
+    return new AddedThred({ ...result.rows[0] })
   }
 }
 

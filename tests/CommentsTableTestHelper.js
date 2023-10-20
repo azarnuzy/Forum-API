@@ -10,14 +10,14 @@ const CommentTableTestHelper = {
     is_delete = false,
   }) {
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6)',
-      values: [id, content, owner, thread_id, is_delete, date],
+      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5)',
+      values: [id, thread_id, owner, content, is_delete],
     }
     await pool.query(query)
   },
   async getCommentById(id) {
     const query = {
-      text: `SELECT * FROM comments WHERE id = '${id}'`,
+      text: `SELECT * FROM comments WHERE id = $1`,
       values: [id],
     }
 

@@ -92,7 +92,6 @@ describe('ThreadRepositoryPostgres', () => {
       // Assert
       expect(thread.id).toEqual('thread-123')
       expect(thread.title).toEqual('title')
-      expect(thread.body).toEqual('body')
       expect(thread.owner).toEqual('user-123')
     })
   })
