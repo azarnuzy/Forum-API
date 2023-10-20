@@ -20,6 +20,11 @@ exports.up = (pgm) => {
       notNull: true,
       default: false,
     },
+    date: {
+      type: 'TIMESTAMPTZ',
+      notNull: true,
+      default: pgm.func('CURRENT_TIMESTAMP'),
+    },
   })
 
   pgm.addConstraint(
