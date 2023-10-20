@@ -5,7 +5,6 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
 const AddComment = require('../../../Domains/comments/entities/AddComment')
 const pool = require('../../database/postgres/pool')
 const InvariantError = require('../../../Commons/exceptions/InvariantError')
-const NotFoundError = require('../../../Commons/exceptions/NotFoundError')
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
