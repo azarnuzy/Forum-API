@@ -5,6 +5,8 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
 const AddComment = require('../../../Domains/comments/entities/AddComment')
 const pool = require('../../database/postgres/pool')
 const InvariantError = require('../../../Commons/exceptions/InvariantError')
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError')
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError')
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
@@ -103,6 +105,56 @@ describe('CommentRepositoryPostgres', () => {
       expect(comment.id).toEqual('comment-123')
       expect(comment.content).toEqual('sebuah comment')
       expect(comment.owner).toEqual('user-123')
+    })
+  })
+
+  describe('deleteComment function', () => {
+    it('should throw AuthorizationError when delete comment not owned by owner', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+      await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
+      await CommentTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        threadId: 'thread-123',
+        owner: 'user-123',
+      })
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.verifyCommentOwner('comment-123', 'dicoding')
+      ).rejects.toThrowError(AuthorizationError)
+    })
+
+    it('should throw NotFoundError when delete comment not found', async () => {
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.deleteCommentById('comment-123')
+      ).rejects.toThrowError(NotFoundError)
+    })
+
+    it('should return deleted comment correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+      await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
+      await CommentTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        threadId: 'thread-123',
+        owner: 'user-123',
+      })
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+
+      // Action
+      await commentRepositoryPostgres.deleteCommentById('comment-123')
+      const comment = await CommentTableTestHelper.getCommentById('comment-123')
+
+      // Assert
+      expect(comment[0].is_delete).toEqual(true)
     })
   })
 })
