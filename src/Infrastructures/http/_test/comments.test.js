@@ -162,4 +162,152 @@ describe('comments endpoint', () => {
       expect(responseJson.message).toEqual('thread tidak ditemukan')
     })
   })
+
+  describe('when DELETE /threads/{threadId}/comments/{commentId}', () => {
+    it('should response 401 status code when request not contain access token', async () => {
+      // Arrange
+      const server = await createServer(container)
+
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-123/comments/comment-123',
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(401)
+      expect(responseJson.message).toEqual('Missing authentication')
+    })
+
+    it('should response 401 status code when access token not contain correct credentials', async () => {
+      // Arrange
+      const server = await createServer(container)
+
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-123/comments/comment-123',
+        headers: {
+          Authorization: 'Bearer salah',
+        },
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(401)
+      expect(responseJson.message).toEqual('Invalid token structure')
+    })
+
+    it('should response 403 status code when user is not the comment owner', async () => {
+      // Arrange
+      const server = await createServer(container)
+
+      await UsersTableTestHelper.addUser({
+        id: 'user-456',
+        username: 'dicoding-2',
+      })
+
+      const { accessToken } = await ServerTestHelper.getAccessTokenAndIdUser({
+        server,
+      })
+
+      await ThreadTableTestHelper.addThread({
+        title: 'sebuah thread',
+        owner: 'user-456',
+      })
+      await CommentTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        owner: 'user-456',
+        threadId: 'thread-123',
+      })
+
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-123/comments/comment-123',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(403)
+      expect(responseJson.message).toEqual(
+        'anda tidak berhak mengakses resource ini'
+      )
+    })
+
+    it('should response 404 status code when thread not found', async () => {
+      // Arrange
+      const server = await createServer(container)
+
+      const { accessToken, userId } =
+        await ServerTestHelper.getAccessTokenAndIdUser({
+          server,
+        })
+
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'sebuah thread',
+        owner: userId,
+      })
+
+      await CommentTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        owner: userId,
+        threadId: 'thread-123',
+      })
+
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-456/comments/comment-123',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(404)
+      expect(responseJson.message).toEqual('thread tidak ditemukan')
+    })
+
+    it('should response 200 and delete comment', async () => {
+      // Arrange
+      const server = await createServer(container)
+
+      const { accessToken, userId } =
+        await ServerTestHelper.getAccessTokenAndIdUser({
+          server,
+        })
+
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'sebuah thread',
+        owner: userId,
+      })
+
+      await CommentTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        owner: userId,
+        threadId: 'thread-123',
+      })
+
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-123/comments/comment-123',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(200)
+      expect(responseJson.status).toEqual('success')
+      expect(responseJson.message).toEqual('comment berhasil dihapus')
+    })
+  })
 })

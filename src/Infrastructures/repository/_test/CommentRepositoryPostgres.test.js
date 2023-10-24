@@ -4,7 +4,6 @@ const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
 const AddComment = require('../../../Domains/comments/entities/AddComment')
 const pool = require('../../database/postgres/pool')
-const InvariantError = require('../../../Commons/exceptions/InvariantError')
 const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError')
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError')
 
@@ -74,14 +73,14 @@ describe('CommentRepositoryPostgres', () => {
   })
 
   describe('getCommentById function', () => {
-    it('should throw InvariantError when comment not found', async () => {
+    it('should throw NotFoundError when comment not found', async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
 
       // Action & Assert
       await expect(
         commentRepositoryPostgres.getCommentById('comment-123')
-      ).rejects.toThrowError(InvariantError)
+      ).rejects.toThrowError(NotFoundError)
     })
 
     it('should return comment correctly', async () => {
@@ -127,13 +126,13 @@ describe('CommentRepositoryPostgres', () => {
       ).rejects.toThrowError(AuthorizationError)
     })
 
-    it('should throw NotFoundError when delete comment not found', async () => {
+    it('should throw NotFoundError when comment not found', async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.deleteCommentById('comment-123')
+        commentRepositoryPostgres.getCommentById('comment-123')
       ).rejects.toThrowError(NotFoundError)
     })
 

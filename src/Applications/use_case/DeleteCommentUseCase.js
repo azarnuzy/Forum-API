@@ -1,5 +1,5 @@
 class DeleteCommentUseCase {
-  constructor({ commentRepository }) {
+  constructor({ commentRepository, threadRepository }) {
     this._commentRepository = commentRepository
     this._threadRepository = threadRepository
   }
@@ -14,3 +14,5 @@ class DeleteCommentUseCase {
     await this._commentRepository.deleteComment(useCasePayload.commentId)
   }
 }
+
+module.exports = DeleteCommentUseCase

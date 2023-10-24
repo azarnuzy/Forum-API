@@ -29,6 +29,7 @@ describe('a DeleteCommentUseCase', () => {
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
+      threadRepository: mockThreadRepository,
     })
     // Action
     await deleteCommentUseCase.execute(useCasePayload)

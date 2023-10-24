@@ -1,5 +1,5 @@
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError')
-const InvariantError = require('../../Commons/exceptions/InvariantError')
+const NotFoundError = require('../../Commons/exceptions/NotFoundError')
 const CommentRepository = require('../../Domains/comments/CommentRepository')
 const AddedComment = require('../../Domains/comments/entities/AddedComment')
 
@@ -36,7 +36,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query)
 
     if (!result.rowCount) {
-      throw new InvariantError('comment tidak ditemukan')
+      throw new NotFoundError('comment tidak ditemukan')
     }
 
     return new AddedComment({ ...result.rows[0] })
@@ -52,7 +52,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rowCount) {
       throw new AuthorizationError('Anda bukan pemilik comment ini')
     }
-
     return result.rows[0]
   }
 
