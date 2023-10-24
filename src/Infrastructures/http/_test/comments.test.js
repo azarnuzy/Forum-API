@@ -232,9 +232,7 @@ describe('comments endpoint', () => {
       // Assert
       const responseJson = JSON.parse(response.payload)
       expect(response.statusCode).toEqual(403)
-      expect(responseJson.message).toEqual(
-        'anda tidak berhak mengakses resource ini'
-      )
+      expect(responseJson.message).toEqual('Anda bukan pemilik comment ini')
     })
 
     it('should response 404 status code when thread not found', async () => {

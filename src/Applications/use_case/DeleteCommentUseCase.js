@@ -11,7 +11,7 @@ class DeleteCommentUseCase {
       useCasePayload.owner
     )
     await this._commentRepository.getCommentById(useCasePayload.commentId)
-    await this._commentRepository.deleteComment(useCasePayload.commentId)
+    await this._commentRepository.deleteCommentById(useCasePayload.commentId)
   }
 }
 

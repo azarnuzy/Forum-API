@@ -25,7 +25,7 @@ describe('a DeleteCommentUseCase', () => {
     mockCommentRepository.getCommentById = jest.fn(() =>
       Promise.resolve(expectedComment)
     )
-    mockCommentRepository.deleteComment = jest.fn(() => Promise.resolve())
+    mockCommentRepository.deleteCommentById = jest.fn(() => Promise.resolve())
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
@@ -45,7 +45,7 @@ describe('a DeleteCommentUseCase', () => {
     expect(mockCommentRepository.getCommentById).toBeCalledWith(
       useCasePayload.commentId
     )
-    expect(mockCommentRepository.deleteComment).toBeCalledWith(
+    expect(mockCommentRepository.deleteCommentById).toBeCalledWith(
       useCasePayload.commentId
     )
   })

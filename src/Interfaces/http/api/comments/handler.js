@@ -47,6 +47,7 @@ class CommentsHandler {
 
     const response = h.response({
       status: 'success',
+      message: 'comment berhasil dihapus',
     })
 
     response.code(200)
