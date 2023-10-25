@@ -19,7 +19,7 @@ describe('a Thread entity', () => {
       id: 123,
       title: true,
       body: 123,
-      date: Date.now(),
+      date: new Date(),
       username: 'dicoding',
     }
 
@@ -35,7 +35,7 @@ describe('a Thread entity', () => {
       id: 'thread-123',
       title: 'title thread',
       body: 'body thread',
-      date: Date.now(),
+      date: new Date(),
       username: 'dicoding',
     }
 

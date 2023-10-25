@@ -18,6 +18,7 @@ class Comment {
     if (
       typeof id !== 'string' ||
       typeof content !== 'string' ||
+      !(date instanceof Date) ||
       typeof username !== 'string' ||
       typeof isDeleted !== 'boolean'
     ) {

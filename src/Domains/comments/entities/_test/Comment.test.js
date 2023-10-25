@@ -19,7 +19,7 @@ describe('a Comment entity', () => {
       id: 123,
       username: 123,
       content: 123,
-      date: Date.now(),
+      date: new Date(),
       isDeleted: false,
     }
 
@@ -35,7 +35,7 @@ describe('a Comment entity', () => {
       id: 'comment-123',
       username: 'dicoding',
       content: 'comment content',
-      date: Date.now(),
+      date: new Date(),
       isDeleted: false,
     }
 
@@ -55,7 +55,7 @@ describe('a Comment entity', () => {
       id: 'comment-123',
       username: 'dicoding',
       content: 'comment content',
-      date: Date.now(),
+      date: new Date(),
       isDeleted: true,
     }
 
