@@ -9,7 +9,7 @@ describe('a Thread entity', () => {
 
     // Action & Assert
     expect(() => new Thread(payload)).toThrowError(
-      'GET_THREAD.NOT_CONTAIN_NEEDED_PROPERTY'
+      'THREAD.NOT_CONTAIN_NEEDED_PROPERTY'
     )
   })
 
@@ -25,7 +25,7 @@ describe('a Thread entity', () => {
 
     // Action & Assert
     expect(() => new Thread(payload)).toThrowError(
-      'GET_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION'
+      'THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION'
     )
   })
 
