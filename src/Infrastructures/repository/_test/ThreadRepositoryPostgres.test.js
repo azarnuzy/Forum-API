@@ -1,3 +1,4 @@
+const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
 const InvariantError = require('../../../Commons/exceptions/InvariantError')
@@ -94,6 +95,42 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.id).toEqual('thread-123')
       expect(thread.title).toEqual('title')
       expect(thread.owner).toEqual('user-123')
+    })
+  })
+
+  describe('getDetailThreadById function', () => {
+    it('should throw NotFoundError when detail thread not found', async () => {
+      // Arrange
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {})
+
+      // Action & Assert
+      await expect(
+        threadRepositoryPostgres.getDetailThreadById('thread-123')
+      ).rejects.toThrowError(NotFoundError)
+    })
+
+    it('should return detail thread correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'title',
+        body: 'body',
+        owner: 'user-123',
+      })
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {})
+
+      // Action
+      const thread = await threadRepositoryPostgres.getDetailThreadById(
+        'thread-123'
+      )
+
+      // Assert
+      expect(thread.id).toEqual('thread-123')
+      expect(thread.title).toEqual('title')
+      expect(thread.body).toEqual('body')
+      expect(thread.username).toEqual('dicoding')
     })
   })
 })
