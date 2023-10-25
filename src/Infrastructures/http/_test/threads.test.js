@@ -1,3 +1,4 @@
+const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const ServerTestHelper = require('../../../../tests/ServerTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
@@ -13,6 +14,7 @@ describe('/threads endpoint', () => {
   afterEach(async () => {
     await ThreadTableTestHelper.cleanTable()
     await UsersTableTestHelper.cleanTable()
+    await CommentTableTestHelper.cleanTable()
   })
 
   describe('when POST /threads', () => {
@@ -105,6 +107,80 @@ describe('/threads endpoint', () => {
       expect(responseJson.message).toEqual(
         'tidak dapat membuat thread baru karena tipe data tidak sesuai'
       )
+    })
+  })
+
+  describe('when GET /threads/{threadId}', () => {
+    it('should response 404 status code when  thread not found', async () => {
+      // Arrange
+      const server = await createServer(container)
+
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/thread-123',
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(404)
+      expect(responseJson.message).toEqual('thread tidak ditemukan')
+    })
+
+    it('should response 200 and return correct detail thread', async () => {
+      // Arrange
+      const server = await createServer(container)
+
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'title',
+        body: 'body',
+        owner: 'user-123',
+      })
+      await CommentTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        owner: 'user-123',
+        threadId: 'thread-123',
+        is_delete: false,
+      })
+      await CommentTableTestHelper.addComment({
+        id: 'comment-456',
+        content: 'sebuah comment 2',
+        owner: 'user-123',
+        threadId: 'thread-123',
+        is_delete: true,
+      })
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/thread-123',
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(200)
+      expect(responseJson.status).toEqual('success')
+
+      expect(responseJson.data.thread).toBeDefined()
+      expect(responseJson.data.thread.id).toEqual('thread-123')
+      expect(responseJson.data.thread.title).toEqual('title')
+      expect(responseJson.data.thread.body).toEqual('body')
+      expect(responseJson.data.thread.username).toEqual('dicoding')
+      expect(responseJson.data.thread.comments).toHaveLength(2)
+      expect(responseJson.data.thread.comments[0].id).toEqual('comment-123')
+      expect(responseJson.data.thread.comments[0].content).toEqual(
+        'sebuah comment'
+      )
+      expect(responseJson.data.thread.comments[0].username).toEqual('dicoding')
+      expect(responseJson.data.thread.comments[1].id).toEqual('comment-456')
+      expect(responseJson.data.thread.comments[1].content).toEqual(
+        '**komentar telah dihapus**'
+      )
+      expect(responseJson.data.thread.comments[1].username).toEqual('dicoding')
     })
   })
 })

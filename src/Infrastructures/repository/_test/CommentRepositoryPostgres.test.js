@@ -156,4 +156,49 @@ describe('CommentRepositoryPostgres', () => {
       expect(comment[0].is_delete).toEqual(true)
     })
   })
+
+  describe('getCommentsByThreadId function', () => {
+    it('should return get comments by thread id correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+      await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
+      await CommentTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        threadId: 'thread-123',
+        owner: 'user-123',
+        is_delete: false,
+      })
+      await CommentTableTestHelper.addComment({
+        id: 'comment-456',
+        content: 'sebuah comment 2',
+        threadId: 'thread-123',
+        owner: 'user-123',
+        is_delete: true,
+      })
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId(
+        'thread-123'
+      )
+
+      // Assert
+      expect(comments).toHaveLength(2)
+      expect(comments[0]).toEqual({
+        id: 'comment-123',
+        username: 'dicoding',
+        date: expect.any(Date),
+        content: 'sebuah comment',
+        is_delete: false,
+      })
+      expect(comments[1]).toEqual({
+        id: 'comment-456',
+        username: 'dicoding',
+        date: expect.any(Date),
+        content: 'sebuah comment 2',
+        is_delete: true,
+      })
+    })
+  })
 })

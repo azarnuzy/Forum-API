@@ -6,8 +6,18 @@ class GetDetailThreadUseCase {
 
   async execute(threadId) {
     const thread = await this._threadRepository.getDetailThreadById(threadId)
-    const comments = await this._commentRepository.getCommentsByThreadId(
-      threadId
+    let comments = await this._commentRepository.getCommentsByThreadId(threadId)
+
+    comments = await Promise.all(
+      comments.map(async (comment) => {
+        return {
+          id: comment.id,
+          content: comment.is_delete
+            ? '**komentar telah dihapus**'
+            : comment.content,
+          username: comment.username,
+        }
+      })
     )
 
     return {
