@@ -16,6 +16,7 @@ class GetDetailThreadUseCase {
             ? '**komentar telah dihapus**'
             : comment.content,
           username: comment.username,
+          date: comment.date,
         }
       })
     )
