@@ -23,10 +23,10 @@ describe('DeleteReplyUseCase', () => {
     mockCommentRepository.getCommentById = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
-    mockReplyRepository.verifyReplyOwner = jest
+    mockReplyRepository.getReplyById = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
-    mockReplyRepository.getReplyById = jest
+    mockReplyRepository.verifyReplyOwner = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
     mockReplyRepository.deleteReply = jest

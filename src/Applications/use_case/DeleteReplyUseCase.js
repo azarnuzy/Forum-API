@@ -8,11 +8,11 @@ class DeleteReplyUseCase {
   async execute(useCasePayload) {
     await this._threadRepository.getThreadById(useCasePayload.threadId)
     await this._commentRepository.getCommentById(useCasePayload.commentId)
+    await this._replyRepository.getReplyById(useCasePayload.replyId)
     await this._replyRepository.verifyReplyOwner(
       useCasePayload.replyId,
       useCasePayload.owner
     )
-    await this._replyRepository.getReplyById(useCasePayload.replyId)
     await this._replyRepository.deleteReply(useCasePayload.replyId)
   }
 }
