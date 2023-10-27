@@ -5,6 +5,9 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
+    thread_id: {
+      type: 'VARCHAR(50)',
+    },
     comment_id: {
       type: 'VARCHAR(50)',
     },
@@ -26,6 +29,12 @@ exports.up = (pgm) => {
       default: pgm.func('CURRENT_TIMESTAMP'),
     },
   })
+
+  pgm.addConstraint(
+    'replies',
+    'fk_replies.thread_id_threads.id',
+    'FOREIGN KEY(thread_id) REFERENCES threads(id) ON DELETE CASCADE'
+  )
 
   pgm.addConstraint(
     'replies',
