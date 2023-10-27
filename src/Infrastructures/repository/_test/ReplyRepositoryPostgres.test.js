@@ -1,4 +1,4 @@
-const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
@@ -13,7 +13,7 @@ describe('ReplyRepositoryPostgres', () => {
   afterEach(async () => {
     await RepliesTableTestHelper.cleanTable()
     await UsersTableTestHelper.cleanTable()
-    await CommentTableTestHelper.cleanTable()
+    await CommentsTableTestHelper.cleanTable()
     await ThreadTableTestHelper.cleanTable()
   })
 
@@ -26,7 +26,7 @@ describe('ReplyRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({ content: 'sebuah comment' })
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' })
 
       const addReply = new AddReply({
         content: 'sebuah reply',
@@ -52,7 +52,7 @@ describe('ReplyRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({ content: 'sebuah comment' })
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' })
 
       const addReply = new AddReply({
         content: 'sebuah reply',
@@ -98,7 +98,7 @@ describe('ReplyRepositoryPostgres', () => {
         username: 'user-456',
       })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({ content: 'sebuah comment' })
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' })
       await RepliesTableTestHelper.addReply({
         owner: 'user-123',
         content: 'sebuah reply',
@@ -130,7 +130,7 @@ describe('ReplyRepositoryPostgres', () => {
         username: 'dicoding',
       })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({ content: 'sebuah comment' })
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' })
       await RepliesTableTestHelper.addReply({
         owner: 'user-123',
         content: 'sebuah reply',
@@ -162,7 +162,7 @@ describe('ReplyRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({ content: 'sebuah comment' })
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' })
       await RepliesTableTestHelper.addReply({
         id: 'reply-123',
         content: 'sebuah reply',
@@ -185,7 +185,7 @@ describe('ReplyRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({ content: 'sebuah comment' })
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' })
       await RepliesTableTestHelper.addReply({
         id: 'reply-123',
         content: 'sebuah reply 1',

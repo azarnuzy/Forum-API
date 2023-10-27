@@ -12,48 +12,12 @@ describe('comments endpoint', () => {
   })
 
   afterEach(async () => {
-    await UsersTableTestHelper.cleanTable()
-    await ThreadTableTestHelper.cleanTable()
     await CommentTableTestHelper.cleanTable()
+    await ThreadTableTestHelper.cleanTable()
+    await UsersTableTestHelper.cleanTable()
   })
 
   describe('when POST /threads/{threadId}/comments', () => {
-    it('should response 201 and persisted comment', async () => {
-      // Arrange
-
-      const requestPayload = {
-        content: 'sebuah comment',
-      }
-
-      const server = await createServer(container)
-
-      const { accessToken, userId } =
-        await ServerTestHelper.getAccessTokenAndIdUser({
-          server,
-        })
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        owner: userId,
-      })
-
-      const response = await server.inject({
-        method: 'POST',
-        url: '/threads/thread-123/comments',
-        payload: requestPayload,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-
-      // Assert
-      const responseJson = JSON.parse(response.payload)
-      expect(response.statusCode).toEqual(201)
-      expect(responseJson.status).toEqual('success')
-      expect(responseJson.data.addedComment).toBeDefined()
-    })
-
     it('should response 400 when request payload not contain needed property', async () => {
       // Arrange
       const requestPayload = {
@@ -160,6 +124,42 @@ describe('comments endpoint', () => {
       expect(response.statusCode).toEqual(404)
       expect(responseJson.status).toEqual('fail')
       expect(responseJson.message).toEqual('thread tidak ditemukan')
+    })
+
+    it('should response 201 and persisted comment', async () => {
+      // Arrange
+
+      const requestPayload = {
+        content: 'sebuah comment',
+      }
+
+      const server = await createServer(container)
+
+      const { accessToken, userId } =
+        await ServerTestHelper.getAccessTokenAndIdUser({
+          server,
+        })
+
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'sebuah thread',
+        owner: userId,
+      })
+
+      const response = await server.inject({
+        method: 'POST',
+        url: '/threads/thread-123/comments',
+        payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+
+      // Assert
+      const responseJson = JSON.parse(response.payload)
+      expect(response.statusCode).toEqual(201)
+      expect(responseJson.status).toEqual('success')
+      expect(responseJson.data.addedComment).toBeDefined()
     })
   })
 

@@ -1,4 +1,4 @@
-const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const ServerTestHelper = require('../../../../tests/ServerTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
@@ -14,7 +14,7 @@ describe('/threads endpoint', () => {
   afterEach(async () => {
     await ThreadTableTestHelper.cleanTable()
     await UsersTableTestHelper.cleanTable()
-    await CommentTableTestHelper.cleanTable()
+    await CommentsTableTestHelper.cleanTable()
   })
 
   describe('when POST /threads', () => {
@@ -140,14 +140,14 @@ describe('/threads endpoint', () => {
         body: 'body',
         owner: 'user-123',
       })
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         content: 'sebuah comment',
         owner: 'user-123',
         threadId: 'thread-123',
         is_delete: false,
       })
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-456',
         content: 'sebuah comment 2',
         owner: 'user-123',

@@ -1,4 +1,4 @@
-const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
 const InvariantError = require('../../../Commons/exceptions/InvariantError')

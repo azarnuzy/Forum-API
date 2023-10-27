@@ -1,5 +1,5 @@
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres')
-const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
 const AddComment = require('../../../Domains/comments/entities/AddComment')
@@ -9,7 +9,7 @@ const NotFoundError = require('../../../Commons/exceptions/NotFoundError')
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
-    await CommentTableTestHelper.cleanTable()
+    await CommentsTableTestHelper.cleanTable()
     await UsersTableTestHelper.cleanTable()
     await ThreadTableTestHelper.cleanTable()
   })
@@ -39,7 +39,7 @@ describe('CommentRepositoryPostgres', () => {
       await commentRepositoryPostgres.addComment(addComment)
 
       // Assert
-      const comments = await CommentTableTestHelper.getCommentById(
+      const comments = await CommentsTableTestHelper.getCommentById(
         'comment-123'
       )
       expect(comments).toHaveLength(1)
@@ -87,7 +87,7 @@ describe('CommentRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         content: 'sebuah comment',
         threadId: 'thread-123',
@@ -112,7 +112,7 @@ describe('CommentRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         content: 'sebuah comment',
         threadId: 'thread-123',
@@ -140,7 +140,7 @@ describe('CommentRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         content: 'sebuah comment',
         threadId: 'thread-123',
@@ -150,7 +150,9 @@ describe('CommentRepositoryPostgres', () => {
 
       // Action
       await commentRepositoryPostgres.deleteCommentById('comment-123')
-      const comment = await CommentTableTestHelper.getCommentById('comment-123')
+      const comment = await CommentsTableTestHelper.getCommentById(
+        'comment-123'
+      )
 
       // Assert
       expect(comment[0].is_delete).toEqual(true)
@@ -162,14 +164,14 @@ describe('CommentRepositoryPostgres', () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
       await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         content: 'sebuah comment',
         threadId: 'thread-123',
         owner: 'user-123',
         is_delete: false,
       })
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-456',
         content: 'sebuah comment 2',
         threadId: 'thread-123',
