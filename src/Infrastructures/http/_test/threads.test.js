@@ -1,4 +1,5 @@
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
+const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper')
 const ServerTestHelper = require('../../../../tests/ServerTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
@@ -15,6 +16,7 @@ describe('/threads endpoint', () => {
     await ThreadTableTestHelper.cleanTable()
     await UsersTableTestHelper.cleanTable()
     await CommentsTableTestHelper.cleanTable()
+    await RepliesTableTestHelper.cleanTable()
   })
 
   describe('when POST /threads', () => {
@@ -154,6 +156,20 @@ describe('/threads endpoint', () => {
         threadId: 'thread-123',
         is_delete: true,
       })
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        content: 'sebuah reply',
+        owner: 'user-123',
+        commentId: 'comment-123',
+        is_delete: false,
+      })
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-456',
+        content: 'sebuah reply 2',
+        owner: 'user-123',
+        commentId: 'comment-123',
+        is_delete: true,
+      })
       // Action
       const response = await server.inject({
         method: 'GET',
@@ -176,6 +192,25 @@ describe('/threads endpoint', () => {
         'sebuah comment'
       )
       expect(responseJson.data.thread.comments[0].username).toEqual('dicoding')
+      expect(responseJson.data.thread.comments[0].replies).toHaveLength(2)
+      expect(responseJson.data.thread.comments[0].replies[0].id).toEqual(
+        'reply-123'
+      )
+      expect(responseJson.data.thread.comments[0].replies[0].content).toEqual(
+        'sebuah reply'
+      )
+      expect(responseJson.data.thread.comments[0].replies[0].username).toEqual(
+        'dicoding'
+      )
+      expect(responseJson.data.thread.comments[0].replies[1].id).toEqual(
+        'reply-456'
+      )
+      expect(responseJson.data.thread.comments[0].replies[1].content).toEqual(
+        '**balasan telah dihapus**'
+      )
+      expect(responseJson.data.thread.comments[0].replies[1].username).toEqual(
+        'dicoding'
+      )
       expect(responseJson.data.thread.comments[1].id).toEqual('comment-456')
       expect(responseJson.data.thread.comments[1].content).toEqual(
         '**komentar telah dihapus**'

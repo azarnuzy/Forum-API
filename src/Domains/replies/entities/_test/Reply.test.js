@@ -20,6 +20,7 @@ describe('a Reply entities', () => {
       content: 123,
       owner: true,
       date: 'ini waktu',
+      is_delete: 'false',
     }
 
     // Action and Assert
@@ -35,6 +36,7 @@ describe('a Reply entities', () => {
       content: 'reply content',
       owner: 'user-123',
       date: new Date(),
+      is_delete: false,
     }
 
     // Action

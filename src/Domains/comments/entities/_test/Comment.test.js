@@ -20,7 +20,7 @@ describe('a Comment entity', () => {
       username: 123,
       content: 123,
       date: new Date(),
-      isDeleted: false,
+      is_delete: false,
     }
 
     // Action & Assert
@@ -36,11 +36,11 @@ describe('a Comment entity', () => {
       username: 'dicoding',
       content: 'comment content',
       date: new Date(),
-      isDeleted: false,
+      is_delete: false,
     }
 
     // Action
-    const { id, username, content, date, isDeleted } = new Comment(payload)
+    const { id, username, content, date, is_delete } = new Comment(payload)
 
     // Assert
     expect(id).toEqual(payload.id)
@@ -49,18 +49,18 @@ describe('a Comment entity', () => {
     expect(date).toEqual(payload.date)
   })
 
-  it('should create Comment object correctly when isDeleted is true', () => {
+  it('should create Comment object correctly when is_delete is true', () => {
     // Arrange
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
       content: 'comment content',
       date: new Date(),
-      isDeleted: true,
+      is_delete: true,
     }
 
     // Action
-    const { id, username, content, date, isDeleted } = new Comment(payload)
+    const { id, username, content, date, is_delete } = new Comment(payload)
 
     // Assert
     expect(id).toEqual(payload.id)
