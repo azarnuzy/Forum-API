@@ -30,6 +30,7 @@ describe('DeleteReplyUseCase', () => {
       content: 'content reply',
       owner: useCasePayload.owner,
       date: new Date(),
+      is_delete: false,
     })
 
     const mockReplyRepository = new ReplyRepository()
