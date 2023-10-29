@@ -7,12 +7,15 @@ exports.up = (pgm) => {
     },
     thread_id: {
       type: 'VARCHAR(50)',
+      notNull: true,
     },
     comment_id: {
       type: 'VARCHAR(50)',
+      notNull: true,
     },
     owner: {
       type: 'VARCHAR(50)',
+      notNull: true,
     },
     content: {
       type: 'TEXT',
