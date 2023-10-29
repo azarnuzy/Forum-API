@@ -59,8 +59,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!result.rowCount) {
       throw new NotFoundError('reply tidak ditemukan')
     }
-
-    return result.rows[0]
   }
 
   async getRepliesByCommentId(commentId) {

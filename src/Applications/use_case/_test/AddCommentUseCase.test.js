@@ -3,6 +3,7 @@ const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const AddedComment = require('../../../Domains/comments/entities/AddedComment')
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository')
 const AddComment = require('../../../Domains/comments/entities/AddComment')
+const AddedThred = require('../../../Domains/threads/entities/AddedThread')
 
 describe('AddCommentUseCase', () => {
   it('should orchestrating the add comment action correctly', async () => {
@@ -13,6 +14,11 @@ describe('AddCommentUseCase', () => {
       threadId: 'thread-123',
     }
 
+    const mockAddedThread = new AddedThred({
+      id: 'thread-123',
+      title: 'title',
+      owner: 'user-123',
+    })
     const mockAddedComment = new AddedComment({
       id: 'comment-123',
       content: useCasePayload.content,
@@ -24,7 +30,7 @@ describe('AddCommentUseCase', () => {
 
     mockThreadRepository.getThreadById = jest
       .fn()
-      .mockImplementation(() => Promise.resolve())
+      .mockImplementation(() => Promise.resolve(mockAddedThread))
     mockCommentRepository.addComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(mockAddedComment))
@@ -38,7 +44,13 @@ describe('AddCommentUseCase', () => {
     const addedComment = await getCommentUseCase.execute(useCasePayload)
 
     // Assert
-    expect(addedComment).toStrictEqual(mockAddedComment)
+    const expectedAddedComment = new AddedComment({
+      id: 'comment-123',
+      content: useCasePayload.content,
+      owner: useCasePayload.owner,
+    })
+
+    expect(addedComment).toStrictEqual(expectedAddedComment)
     expect(mockCommentRepository.addComment).toBeCalledWith(
       new AddComment({
         content: useCasePayload.content,

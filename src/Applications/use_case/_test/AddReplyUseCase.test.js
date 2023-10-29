@@ -1,8 +1,10 @@
 const CommentRepository = require('../../../Domains/comments/CommentRepository')
+const AddedComment = require('../../../Domains/comments/entities/AddedComment')
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository')
 const AddReply = require('../../../Domains/replies/entities/AddReply')
 const AddedReply = require('../../../Domains/replies/entities/AddedReply')
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository')
+const AddedThred = require('../../../Domains/threads/entities/AddedThread')
 const AddReplyUseCase = require('../AddReplyUseCase')
 
 describe('AddReplyUseCase', () => {
@@ -15,10 +17,21 @@ describe('AddReplyUseCase', () => {
       owner: 'user-123',
     }
 
-    const expectedAddedReply = new AddedReply({
+    const mockAddedReply = new AddedReply({
       id: 'reply-123',
       content: useCasePayload.content,
       owner: useCasePayload.owner,
+    })
+
+    const mockAddedThread = new AddedThred({
+      id: 'thread-123',
+      title: 'title',
+      owner: 'user-123',
+    })
+    const mockAddedComment = new AddedComment({
+      id: 'comment-123',
+      content: 'content comment',
+      owner: 'user-123',
     })
 
     const mockThreadRepository = new ThreadRepository()
@@ -27,13 +40,13 @@ describe('AddReplyUseCase', () => {
 
     mockThreadRepository.getThreadById = jest
       .fn()
-      .mockImplementation(() => Promise.resolve())
+      .mockImplementation(() => Promise.resolve(mockAddedThread))
     mockCommentRepository.getCommentById = jest
       .fn()
-      .mockImplementation(() => Promise.resolve())
+      .mockImplementation(() => Promise.resolve(mockAddedComment))
     mockReplyRepository.addReply = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(expectedAddedReply))
+      .mockImplementation(() => Promise.resolve(mockAddedReply))
 
     const getReplyUseCase = new AddReplyUseCase({
       threadRepository: mockThreadRepository,
@@ -45,6 +58,12 @@ describe('AddReplyUseCase', () => {
     const addedReply = await getReplyUseCase.execute(useCasePayload)
 
     // Assert
+    const expectedAddedReply = new AddedReply({
+      id: 'reply-123',
+      content: useCasePayload.content,
+      owner: useCasePayload.owner,
+    })
+
     expect(mockThreadRepository.getThreadById).toBeCalledWith(
       useCasePayload.threadId
     )

@@ -52,7 +52,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rowCount) {
       throw new AuthorizationError('Anda bukan pemilik comment ini')
     }
-    return result.rows[0]
   }
 
   async deleteCommentById(id) {
