@@ -1,7 +1,7 @@
 const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const AddedComment = require('../../../Domains/comments/entities/AddedComment')
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository')
-const AddedReply = require('../../../Domains/replies/entities/AddedReply')
+const Reply = require('../../../Domains/replies/entities/Reply')
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository')
 const AddedThred = require('../../../Domains/threads/entities/AddedThread')
 const DeleteReplyUseCase = require('../DeleteReplyUseCase')
@@ -15,13 +15,6 @@ describe('DeleteReplyUseCase', () => {
       threadId: 'thread-123',
       commentId: 'comment-123',
     }
-
-    const mockAddedReply = new AddedReply({
-      id: useCasePayload.replyId,
-      content: 'content reply',
-      owner: useCasePayload.owner,
-    })
-
     const mockAddedThread = new AddedThred({
       id: useCasePayload.threadId,
       title: 'title',
@@ -31,6 +24,12 @@ describe('DeleteReplyUseCase', () => {
       id: useCasePayload.commentId,
       content: 'content comment',
       owner: useCasePayload.owner,
+    })
+    const mockReply = new Reply({
+      id: useCasePayload.replyId,
+      content: 'content reply',
+      owner: useCasePayload.owner,
+      date: new Date(),
     })
 
     const mockReplyRepository = new ReplyRepository()
@@ -45,7 +44,7 @@ describe('DeleteReplyUseCase', () => {
       .mockImplementation(() => Promise.resolve(mockAddedComment))
     mockReplyRepository.getReplyById = jest
       .fn()
-      .mockImplementation(() => Promise.resolve())
+      .mockImplementation(() => Promise.resolve(mockReply))
     mockReplyRepository.verifyReplyOwner = jest
       .fn()
       .mockImplementation(() => Promise.resolve())

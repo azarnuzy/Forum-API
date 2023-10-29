@@ -107,7 +107,7 @@ describe('CommentRepositoryPostgres', () => {
     })
   })
 
-  describe('deleteComment function', () => {
+  describe('verifyCommentOwner function', () => {
     it('should throw AuthorizationError when delete comment not owned by owner', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'dicoding' })
@@ -126,6 +126,26 @@ describe('CommentRepositoryPostgres', () => {
       ).rejects.toThrowError(AuthorizationError)
     })
 
+    it('should not throw AuthorizationError when delete comment owned by owner', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+      await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        threadId: 'thread-123',
+        owner: 'user-123',
+      })
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.verifyCommentOwner('comment-123', 'user-123')
+      ).resolves.not.toThrowError(AuthorizationError)
+    })
+  })
+
+  describe('deleteComment function', () => {
     it('should throw NotFoundError when comment not found', async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})

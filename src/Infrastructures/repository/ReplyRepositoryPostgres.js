@@ -2,6 +2,7 @@ const AuthorizationError = require('../../Commons/exceptions/AuthorizationError'
 const NotFoundError = require('../../Commons/exceptions/NotFoundError')
 const ReplyRepository = require('../../Domains/replies/ReplyRepository')
 const AddedReply = require('../../Domains/replies/entities/AddedReply')
+const Reply = require('../../Domains/replies/entities/Reply')
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {
@@ -48,9 +49,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async getReplyById(replyId) {
     const query = {
-      text: `SELECT replies.*, users.username FROM replies 
-            LEFT JOIN users ON replies.owner = users.id
-            WHERE replies.id = $1`,
+      text: `SELECT id, content, owner, date, is_delete FROM replies WHERE id = $1`,
       values: [replyId],
     }
 
@@ -59,6 +58,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!result.rowCount) {
       throw new NotFoundError('reply tidak ditemukan')
     }
+
+    return new Reply({ ...result.rows[0] })
   }
 
   async getRepliesByCommentId(commentId) {
