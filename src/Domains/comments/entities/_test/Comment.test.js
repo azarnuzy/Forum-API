@@ -40,7 +40,7 @@ describe('a Comment entity', () => {
     }
 
     // Action
-    const { id, username, content, date, is_delete } = new Comment(payload)
+    const { id, username, content, date } = new Comment(payload)
 
     // Assert
     expect(id).toEqual(payload.id)
@@ -60,7 +60,7 @@ describe('a Comment entity', () => {
     }
 
     // Action
-    const { id, username, content, date, is_delete } = new Comment(payload)
+    const { id, username, content, date } = new Comment(payload)
 
     // Assert
     expect(id).toEqual(payload.id)
