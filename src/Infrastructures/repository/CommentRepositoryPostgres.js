@@ -43,7 +43,7 @@ class CommentRepositoryPostgres extends CommentRepository {
   }
   async verifyCommentOwner(id, owner) {
     const query = {
-      text: 'SELECT * FROM comments WHERE id = $1 AND owner = $2',
+      text: 'SELECT owner FROM comments WHERE id = $1 AND owner = $2',
       values: [id, owner],
     }
 
