@@ -1,4 +1,3 @@
-const InvariantError = require('../../Commons/exceptions/InvariantError')
 const NotFoundError = require('../../Commons/exceptions/NotFoundError')
 const ThreadRepository = require('../../Domains/threads/ThreadRepository')
 const AddedThred = require('../../Domains/threads/entities/AddedThread')

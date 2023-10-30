@@ -1,7 +1,5 @@
-const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
-const InvariantError = require('../../../Commons/exceptions/InvariantError')
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError')
 const AddThread = require('../../../Domains/threads/entities/AddThread')
 const pool = require('../../database/postgres/pool')
