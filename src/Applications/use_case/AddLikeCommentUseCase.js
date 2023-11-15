@@ -11,7 +11,22 @@ class AddLikeCommentUseCase {
     const likeComment = new LikeComment(useCasePayload)
     await this._threadRepository.getThreadById(likeComment.threadId)
     await this._commentRepository.getCommentById(likeComment.commentId)
-    return this._likeCommentRepository.addLikeComment(likeComment)
+
+    const isLikeExist = await this._likeCommentRepository.verifyCommentLike(
+      likeComment.commentId,
+      likeComment.owner
+    )
+
+    if (isLikeExist) {
+      return this._likeCommentRepository.unlikeComment(
+        likeComment.commentId,
+        likeComment.owner
+      )
+    }
+    return this._likeCommentRepository.addLikeComment(
+      likeComment.commentId,
+      likeComment.owner
+    )
   }
 }
 
