@@ -18,15 +18,17 @@ class AddLikeCommentUseCase {
     )
 
     if (isLikeExist) {
-      return this._likeCommentRepository.unlikeComment(
-        likeComment.commentId,
-        likeComment.owner
-      )
+      return this._likeCommentRepository.unlikeComment({
+        commentId: likeComment.commentId,
+        owner: likeComment.owner,
+      })
     }
-    return this._likeCommentRepository.addLikeComment(
-      likeComment.commentId,
-      likeComment.owner
-    )
+
+    return this._likeCommentRepository.likeComment({
+      threadId: likeComment.threadId,
+      commentId: likeComment.commentId,
+      owner: likeComment.owner,
+    })
   }
 }
 

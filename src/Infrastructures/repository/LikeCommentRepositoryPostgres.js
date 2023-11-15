@@ -9,7 +9,6 @@ class LikeCommentRepositoryPostgres extends LikeCommentRepository {
 
   async likeComment({ threadId, commentId, owner }) {
     const id = `like-${this._idGenerator()}`
-
     const query = {
       text: 'INSERT INTO likes VALUES($1, $2, $3, $4) RETURNING id',
       values: [id, threadId, commentId, owner],
@@ -18,10 +17,10 @@ class LikeCommentRepositoryPostgres extends LikeCommentRepository {
     await this._pool.query(query)
   }
 
-  async unlikeComment(id) {
+  async unlikeComment({ commentId, owner }) {
     const query = {
-      text: 'DELETE FROM likes WHERE id = $1',
-      values: [id],
+      text: 'DELETE FROM likes WHERE comment_id = $1 AND owner = $2',
+      values: [commentId, owner],
     }
 
     await this._pool.query(query)
@@ -29,7 +28,7 @@ class LikeCommentRepositoryPostgres extends LikeCommentRepository {
 
   async verifyCommentLike({ commentId, owner }) {
     const query = {
-      text: 'SELECT * FROM likes WHERE comment_id = $1 AND owner = $2',
+      text: 'SELECT id FROM likes WHERE comment_id = $1 AND owner = $2',
       values: [commentId, owner],
     }
 

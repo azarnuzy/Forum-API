@@ -42,7 +42,7 @@ describe('AddLikeCommentUseCase', () => {
     mockLikeCommentRepository.verifyCommentLike = jest
       .fn()
       .mockImplementation(() => Promise.resolve(false))
-    mockLikeCommentRepository.addLikeComment = jest
+    mockLikeCommentRepository.likeComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(mockLikedComment))
 

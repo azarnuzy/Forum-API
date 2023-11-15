@@ -66,7 +66,10 @@ describe('LikeRepositoryPostgres', () => {
       )
 
       // action
-      await likeCommentRepositoryPostgres.unlikeComment('like-123')
+      await likeCommentRepositoryPostgres.unlikeComment({
+        commentId: 'comment-123',
+        owner: 'user-123',
+      })
 
       // assert
       const likes = await LikesTableTestHelper.getLikeById('like-123')
