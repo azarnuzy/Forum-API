@@ -12,10 +12,10 @@ class AddLikeCommentUseCase {
     await this._threadRepository.getThreadById(likeComment.threadId)
     await this._commentRepository.getCommentById(likeComment.commentId)
 
-    const isLikeExist = await this._likeCommentRepository.verifyCommentLike(
-      likeComment.commentId,
-      likeComment.owner
-    )
+    const isLikeExist = await this._likeCommentRepository.verifyCommentLike({
+      commentId: likeComment.commentId,
+      owner: likeComment.owner,
+    })
 
     if (isLikeExist) {
       return this._likeCommentRepository.unlikeComment({

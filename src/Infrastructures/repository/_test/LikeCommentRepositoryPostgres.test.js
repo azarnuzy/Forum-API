@@ -134,4 +134,41 @@ describe('LikeRepositoryPostgres', () => {
       expect(isLiked).toEqual(false)
     })
   })
+
+  describe('getLikeCount function', () => {
+    it('should return like count correctly', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({ username: 'dicoding' })
+      await UsersTableTestHelper.addUser({
+        id: 'user-456',
+        username: 'user-456',
+      })
+      await ThreadTableTestHelper.addThread({ title: 'sebuah thread' })
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' })
+      await LikesTableTestHelper.likeComment({
+        id: 'like-123',
+        owner: 'user-123',
+        commentId: 'comment-123',
+      })
+      await LikesTableTestHelper.likeComment({
+        id: 'like-456',
+        owner: 'user-456',
+        commentId: 'comment-123',
+      })
+
+      const fakeIdGenerator = () => '123'
+      const likeCommentRepositoryPostgres = new LikeCommentRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      )
+
+      // action
+      const likeCount = await likeCommentRepositoryPostgres.getLikeCount(
+        'comment-123'
+      )
+
+      // assert
+      expect(likeCount).toEqual(2)
+    })
+  })
 })
