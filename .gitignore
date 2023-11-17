@@ -7,3 +7,4 @@ coverage
 *.zip
 *.pem
 *.txt
+domain.json
