@@ -34,8 +34,6 @@ class LikeCommentRepositoryPostgres extends LikeCommentRepository {
 
     const result = await this._pool.query(query)
 
-    console.log(result.rowCount, commentId, owner)
-
     if (result.rowCount) {
       return true
     }
